@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MNHS Grade 11 – Pagsusulit sa Kolektibong Pakikibaka | K. Rocero</title>
+<style>
+  :root{
+    --navy:#0B2545; --navy2:#13385F; --deep:#071a33;
+    --teal:#1FA6A0; --teal-soft:#8fdad6; --gold:#F2B84B;
+    --ink:#0f2238; --paper:#ffffff; --muted:#5b7089;
+    --good:#1e9e6a; --bad:#d64545; --warn:#e8a020;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:"Segoe UI",Calibri,Arial,sans-serif;
+    color:#fff; background:radial-gradient(1200px 700px at 80% -10%, #16507a 0%, var(--navy) 45%, var(--deep) 100%) fixed;
+    line-height:1.4;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:20px 16px 48px}
+  header.brand{display:flex;align-items:center;gap:12px;padding:6px 0 16px}
+  .badge{width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+  .brand small{display:block;color:var(--teal-soft);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .brand strong{font-size:16px}
+  .card{background:rgba(255,255,255,.07);border:1px solid rgba(143,218,214,.25);border-radius:var(--radius);padding:24px;backdrop-filter:blur(4px)}
+  h1{font-size:clamp(24px,5vw,34px);line-height:1.15;margin:0 0 6px}
+  .sub{color:var(--teal-soft);margin:0 0 18px}
+  .by{color:var(--gold);font-weight:700;margin:0 0 18px;letter-spacing:.04em}
+  ul.rules{margin:0 0 20px;padding-left:20px}
+  ul.rules li{margin:6px 0}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 20px}
+  .stat{background:rgba(11,37,69,.7);border:1px solid rgba(143,218,214,.25);border-radius:12px;padding:12px;text-align:center}
+  .stat b{display:block;font-size:26px;color:var(--gold)}
+  .stat span{font-size:12px;color:var(--teal-soft);text-transform:uppercase;letter-spacing:.05em}
+  label{display:block;font-size:13px;color:var(--teal-soft);margin:0 0 4px}
+  input[type=text]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(143,218,214,.4);background:rgba(7,26,51,.8);color:#fff;font-size:16px}
+  input[type=text]:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:18px}
+  @media(max-width:520px){.row{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr 1fr}}
+  button{font:inherit;cursor:pointer}
+  .btn{white-space:nowrap;border:0;border-radius:12px;padding:14px 22px;font-weight:700;font-size:16px;background:var(--gold);color:var(--navy);transition:transform .08s, filter .15s}
+  .btn:hover{filter:brightness(1.06)} .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(143,218,214,.5)}
+  .err{color:#ffb4b4;font-size:14px;min-height:20px;margin:-6px 0 10px}
+
+  /* quiz */
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;font-size:14px;color:var(--teal-soft)}
+  .progress{height:8px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .progress i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+  .timer{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .timer .bar{flex:1;height:12px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}
+  .timer .bar i{display:block;height:100%;width:100%;background:var(--teal);transition:background .3s}
+  .timer .num{min-width:64px;text-align:right;font-variant-numeric:tabular-nums;font-weight:800;font-size:22px}
+  .timer.warn .bar i{background:var(--warn)} .timer.warn .num{color:var(--warn)}
+  .timer.crit .bar i{background:var(--bad)} .timer.crit .num{color:#ff8d8d}
+  .qcard{background:var(--paper);color:var(--ink);border-radius:var(--radius);padding:22px 20px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
+  .qno{color:var(--teal);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .qtext{font-size:clamp(18px,3.6vw,22px);font-weight:700;margin:0 0 16px}
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:13px 14px;border-radius:12px;border:2px solid #d5e2ee;background:#f4f9fd;color:var(--ink);font-size:clamp(15px,3.3vw,18px);transition:border-color .12s, background .12s}
+  .opt:hover{border-color:var(--teal)}
+  .opt .l{flex:none;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+  .opt.sel{border-color:var(--navy);background:#dcecf9}
+  .opt.sel .l{background:var(--gold);color:var(--navy)}
+  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+  .hint{font-size:12px;color:var(--muted)}
+  .flash{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:var(--bad);color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+  .flash.on{opacity:1}
+
+  /* result */
+  .score{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:6px 0 16px}
+  .ring{width:130px;height:130px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p)*1%), rgba(255,255,255,.14) 0)}
+  .ring div{width:104px;height:104px;border-radius:50%;background:var(--navy);display:grid;place-items:center;text-align:center}
+  .ring b{font-size:30px;line-height:1} .ring span{font-size:12px;color:var(--teal-soft)}
+  .meta p{margin:2px 0}
+  .review{margin-top:18px;display:grid;gap:10px}
+  .ri{background:rgba(255,255,255,.07);border-left:5px solid var(--bad);border-radius:10px;padding:12px 14px}
+  .ri.ok{border-left-color:var(--good)}
+  .ri .q{font-weight:700;margin-bottom:6px}
+  .ri .a{font-size:14px;color:#dbe8f5}
+  .ri .a b{color:var(--gold)}
+  .hidden{display:none!important}
+  footer{margin-top:22px;text-align:center;color:var(--teal-soft);font-size:12px}
+  @media print{
+    body{background:#fff;color:#000}
+    header.brand,.actions-print,#restart,#printBtn,footer{display:none}
+    .card{background:#fff;border:1px solid #999;color:#000}
+    .ring{display:none}
+    .ri{background:#fff;border:1px solid #bbb;border-left:5px solid #c33;color:#000}.ri.ok{border-left-color:#1e9e6a}
+    .ri .a{color:#000}.ri .a b{color:#000}
+    .sub,.meta p{color:#000}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <div class="badge">MNHS</div>
+    <div><small>Malangas National High School</small><strong>Grade 11 · Araling Panlipunan</strong></div>
+  </header>
+
+  <!-- START -->
+  <section id="start" class="card">
+    <h1>Mga Piling Kolektibong Karanasan ng Pakikibaka Laban sa mga Dayuhan</h1>
+    <p class="sub">Pag-aaral ng Kasaysayan at Lipunang Pilipino · Term 2 · Week 2</p>
+    <p class="by">BY: K. ROCERO</p>
+    <div class="stats">
+      <div class="stat"><b id="sN">50</b><span>Aytem</span></div>
+      <div class="stat"><b id="sT">40</b><span>Segundo / aytem</span></div>
+      <div class="stat"><b>A–D</b><span>Pagpipilian</span></div>
+    </div>
+    <ul class="rules">
+      <li>Bawat aytem ay may <b>40 segundo</b>. Kapag naubos ang oras, awtomatikong lilipat sa susunod.</li>
+      <li>Hindi na maaaring bumalik sa naunang aytem.</li>
+      <li>Random ang pagkakasunod ng mga tanong at pagkakaayos ng mga sagot sa bawat pagsubok o pag-ulit.</li>
+      <li>Pwedeng gamitin ang mga susi <b>A, B, C, D</b> at <b>Enter</b> sa keyboard.</li>
+    </ul>
+    <div class="row">
+      <div><label for="nm">Pangalan</label><input id="nm" type="text" autocomplete="name" placeholder="Apelyido, Unang Pangalan"></div>
+      <div><label for="sec">Seksyon</label><input id="sec" type="text" placeholder="hal. 11-ABM"></div>
+    </div>
+    <div id="err" class="err" role="alert"></div>
+    <button id="startBtn" class="btn">Simulan ang Pagsusulit →</button>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="topbar"><span id="qCount">Aytem 1 / 50</span><span id="who"></span></div>
+    <div class="progress"><i id="prog"></i></div>
+    <div class="timer" id="timer"><div class="bar"><i id="tbar"></i></div><div class="num" id="tnum">40</div></div>
+    <div class="qcard">
+      <div class="qno" id="qno">Tanong 1</div>
+      <p class="qtext" id="qtext"></p>
+      <div class="opts" id="opts"></div>
+      <div class="actions">
+        <span class="hint">Pumili ng sagot, pagkatapos ay pindutin ang Susunod.</span>
+        <button id="nextBtn" class="btn">Susunod →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="card hidden">
+    <h1>Resulta</h1>
+    <div class="score">
+      <div class="ring" id="ring" style="--p:0"><div><div><b id="rScore">0</b><br><span id="rOf">/ 50</span></div></div></div>
+      <div class="meta">
+        <p><b id="rName"></b> <span id="rSec"></span></p>
+        <p id="rPct"></p>
+        <p id="rMiss"></p>
+        <p id="rDate" style="color:var(--teal-soft);font-size:13px"></p>
+      </div>
+    </div>
+    <div class="actions-print" style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="restart" class="btn">↻ Ulitin (bagong ayos)</button>
+      <button id="printBtn" class="btn ghost">I-print / I-save bilang PDF</button>
+    </div>
+    <h2 style="margin:22px 0 4px;font-size:20px">Pagsusuri ng mga Sagot</h2>
+    <div class="review" id="review"></div>
+  </section>
+
+  <footer>© K. Rocero · Malangas National High School (MNHS)</footer>
+</div>
+<div class="flash" id="flash">Naubos ang oras!</div>
+
+<script>
+/* ====== SETTINGS (madaling baguhin) ====== */
+const TIME_LIMIT = 40;       // segundo bawat aytem
+const TOTAL_ITEMS = 50;      // ilan ang lalabas (max = laki ng bangko)
+
+/* ====== BANGKO NG TANONG (options[0] = tamang sagot; binabalasa sa bawat pagsubok) ====== */
+const BANK = [{"q": "Ano ang pinakadirektang epekto ng bandala sa kita ng pamilyang magsasaka?", "options": ["Nabawasan ang kita mula sa sariling ani", "Lumaki ang naiipon nilang salapi", "Naging malaya silang pumili ng bibili", "Nadagdagan ang halagang natatanggap nila"]}, {"q": "Bakit mabigat sa sambahayan ang taunang buwis na sinisingil sa bawat nasa hustong gulang?", "options": ["Lumaki ang gastusin ng pamilya bawat taon", "Dumami ang libreng serbisyo ng pamahalaan", "Lumawak ang lupang pag-aari ng pamilya", "Bumaba ang halaga ng mga kailangang bilhin"]}, {"q": "Aling pahayag ang nagpapakita ng pagkakaiba ng uri ng tao sa lipunang kolonyal?", "options": ["Mas mataas ang turing sa mga Kastila", "Pantay ang turing sa lahat ng mamamayan", "Mas mataas ang turing sa mga katutubo", "Mas mataas ang turing sa mga Amerikano"]}, {"q": "Bakit itinuturing na isyung politikal ang pagkontrol ng mga Kastila sa mahahalagang posisyon?", "options": ["Dahil hawak nila ang kapangyarihan sa bansa", "Dahil sila ang nagtatakda ng presyo ng bigas", "Dahil sila ang kumukuha ng ani ng mga bayan", "Dahil sila ang nagtatakda ng antas ng tao"]}, {"q": "Kung sapilitang paggawa ang sanhi, alin ang pinakamalamang na bunga sa pamilya?", "options": ["Nawalan sila ng kita at lakas-paggawa", "Nagkaroon sila ng dagdag na pahinga", "Tumaas ang halaga ng kanilang lupa", "Dumami ang oras nila sa sariling bukid"]}, {"q": "Bakit ikinagalit ng mga katutubo ang pag-angkin ng ilang prayle sa malalawak na lupain?", "options": ["Nawalan ng sinasaka ang maraming pamilya", "Nadagdagan ang lupang ipinamahagi sa bayan", "Bumaba ang upa sa lupa ng mga magsasaka", "Naging libre ang pag-aararo ng lupa"]}, {"q": "Ano ang tawag sa sapilitang paglilipat ng mga tao sa mas malapit na bayan upang mas madaling pamahalaan?", "options": ["Reduccion", "Bandala", "Tributo", "Encomienda"]}, {"q": "Ano ang pangunahing tungkulin ng Guardia Civil sa kanayunan noong huling bahagi ng pamamahala ng Espanya?", "options": ["Pagbantay sa kaayusan sa mga nayon", "Pangangalaga sa mga paaralan ng bayan", "Pangangasiwa sa pamilihan ng ani", "Pagtuturo ng relihiyon sa mga bata"]}, {"q": "Ang tributo, bandala, at polo y servicio ay pangunahing halimbawa ng anong uri ng isyu?", "options": ["Ekonomiko", "Politikal", "Panlipunan", "Pangkultura"]}, {"q": "Sino ang karaniwang sakop ng sapilitang paggawa noong panahon ng Espanyol?", "options": ["Mga lalaking nasa hustong gulang", "Mga sanggol at batang paslit", "Mga opisyal ng pamahalaang kolonyal", "Mga prayle sa mga parokya"]}, {"q": "Ano ang hangaring lumitaw sa mga Pilipino dahil sa limitadong bahagi nila sa pamahalaan?", "options": ["Magkaroon ng pantay na karapatan", "Mapanatili ang kapangyarihan ng Kastila", "Palawakin ang hukbo ng mananakop", "Bawasan ang sariling paglahok sa bayan"]}, {"q": "Alin ang halimbawa ng mapayapang paghingi ng reporma noong huling bahagi ng panahon ng Espanyol?", "options": ["Pagsulat sa pahayagang La Solidaridad", "Pagtatayo ng mga gerilyang pangkat", "Pagbabayad ng dagdag na buwis", "Pagsali sa hukbong sandatahan ng Hapon"]}, {"q": "Bakit itinuturing na isyung panlipunan ang pang-aabuso ng ilang prayle sa mga katutubo?", "options": ["Dahil nilabag nito ang dignidad ng tao", "Dahil bumaba ang presyo ng mga produkto", "Dahil nabago nito ang mga batas ng hari", "Dahil dumami ang trabaho sa mga daungan"]}, {"q": "Paano nagbunga ng nasyonalismo ang matagal na pang-aapi sa mga Pilipino?", "options": ["Nabuo ang iisang damdamin ng bayan", "Humina ang pagnanais nilang maging malaya", "Nasanay sila sa mga patakarang kolonyal", "Nagkawatak-watak sila sa bawat lalawigan"]}, {"q": "Alin ang halimbawa ng kolektibong pakikibaka laban sa mga Espanyol?", "options": ["Sabayang pag-aalsa ng mga mamamayan", "Sabayang pagbabayad ng dagdag na buwis", "Sabayang pagsali sa hukbong kolonyal", "Sabayang pagtanggap sa utos ng prayle"]}, {"q": "Sa isang nayong sabay na hinihingan ng buwis at paggawa, alin ang malamang na kalagayan ng pamilya?", "options": ["Kapos sa oras at pera para sa bukid", "Sobra-sobra ang panahon para sa pahinga", "Malaki ang natitirang ipon nila", "Madaling nakabili ng bagong lupa"]}, {"q": "Anong hakbang ang nagbukas ng mas maraming silid-aralan para sa mga batang babae noong panahon ng Amerikano?", "options": ["Pagtatatag ng pampublikong paaralan", "Pagpapatupad ng batas militar sa bayan", "Pagkakaloob ng lupa sa mga prayle", "Pagbabalik ng sapilitang paggawa"]}, {"q": "Aling pagbabago ang nagpapakita ng lumalawak na papel ng kababaihan sa pulitika?", "options": ["Pagkakaloob ng karapatang bumoto", "Pagbabawal na sumali sa halalan", "Pagkuha ng tungkulin sa hukbong Hapones", "Pagbibigay ng puwesto sa simbahan"]}, {"q": "Ano ang ipinapakita ng pagbuo ng mga samahan ng kababaihan noong panahong iyon?", "options": ["Kakayahang kumilos para sa bayan", "Pagsunod nila sa lahat ng utos", "Paghihintay nila ng tulong ng prayle", "Pag-iwas nila sa mga gawaing bayan"]}, {"q": "Isang dalagang nakapagtapos ng pag-aaral ang naging guro sa kanilang bayan. Anong pagbabago ang makikita rito?", "options": ["Dumami ang trabahong bukas sa babae", "Nabawasan ang karapatan nilang mag-aral", "Nawala ang pagkakataong magturo", "Lumiit ang papel nila sa nayon"]}, {"q": "Bakit mahalaga sa kababaihan ang karapatang bumoto?", "options": ["May tinig sila sa pagpili ng pinuno", "Nakukuha nila ang buwis ng bayan", "Nagiging sundalo sila sa digmaan", "Napapalitan nila ang mga dayuhan agad"]}, {"q": "Paano sasagutin ang pahayag na pantay ang karapatan ng babae at lalaki noon?", "options": ["Mali, ipinaglaban pa ang karapatan ng babae", "Tama, pareho na ang lahat ng karapatan", "Tama, dahil walang batas na nagbago", "Mali, dahil wala silang nakamit na pagbabago"]}, {"q": "Ang pagtulong ng mga babae sa mga programang pangkalusugan ng komunidad ay ambag sa anong larangan?", "options": ["Lipunan", "Kalakalan", "Digmaan", "Simbahan"]}, {"q": "Kung ihahambing sa panahon ng Espanyol, ano ang mas malaking pagbabago sa kababaihan sa panahong Amerikano?", "options": ["Mas bukas ang mga paaralan para sa kanila", "Mas mahigpit ang mga patakaran sa kanila", "Mas kaunti ang trabahong nakatalaga sa kanila", "Mas pinigilan ang paglahok nila sa samahan"]}, {"q": "Alin ang halimbawang nagpapakita ng papel ng babae sa pulitika noon?", "options": ["Pagsali sa mga kampanya at halalan", "Pagbantay sa mga bodega ng gobyerno", "Pagkuha ng buwis sa mga nayon", "Pamumuno sa mga barkong pandigma"]}, {"q": "Bakit dapat pahalagahan ang mga babaeng nagsulong ng edukasyon?", "options": ["Nakatulong sila sa pag-unlad ng bayan", "Napalitan nila ang lahat ng pinuno", "Naipagbawal nila ang pagtuturo sa lalaki", "Nabawasan nila ang gawain ng mga guro"]}, {"q": "Paano nagbago ang ginampanan ng kababaihan sa lipunan nang magbukas ang mga paaralan?", "options": ["Lumawak ang kanilang papel sa bayan", "Nanatili silang bawal sa lahat ng trabaho", "Nawala ang boses nila sa mga samahan", "Lumiit ang bilang ng nag-aaral na babae"]}, {"q": "Ano ang magagawa ng mag-aaral ngayon upang mapahalagahan ang karapatan ng kababaihan?", "options": ["Igalang ang pantay na pagkakataon", "Balewalain ang mga boses ng babae", "Ipagpaliban ang usapin ng karapatan", "Limitahan ang trabahong bukas sa babae"]}, {"q": "Bakit humina ang suplay ng bigas sa maraming bayan sa panahon ng digmaan?", "options": ["Kinuha ng hukbo ang malaking bahagi ng ani", "Dumami ang angkat na pagkain mula sa Amerika", "Tumaas ang bilang ng mga magsasaka", "Bumaba ang pangangailangan ng mamamayan"]}, {"q": "Ano ang maaaring epekto ng kakulangan sa pagkain sa kalusugan ng mga bata?", "options": ["Humina ang kanilang pangangatawan", "Bumilis ang paglaki ng kanilang timbang", "Lumakas ang panlaban nila sa sakit", "Dumami ang lakas nila sa pag-aaral"]}, {"q": "Ano ang pangunahing layunin ng propagandang Hapones na 'Asya para sa mga Asyano'?", "options": ["Makuha ang pagsang-ayon ng mga Pilipino", "Ibalik ang lumang sistemang Kastila", "Palakasin ang hukbong Amerikano", "Turuan ang lahat ng bata ng wikang Ingles"]}, {"q": "Ano ang tamang paraan upang suriin ang balitang naririnig sa panahon ng digmaan?", "options": ["Ihambing sa ibang maaasahang sanggunian", "Paniwalaan agad ang unang narinig", "Ipasa agad sa lahat ng kakilala", "Kumampi sa pinakamaingay na tagapagsalita"]}, {"q": "Ano ang ibig sabihin ng militarisasyon sa isang komunidad?", "options": ["Kontrol ng hukbo sa kilos ng tao", "Pagdami ng pistang ipinagdiriwang", "Paglawak ng mga pamilihang bayan", "Pagpapalaya sa mga lokal na lider ng bayan"]}, {"q": "Bakit mahirap ang normal na pamumuhay sa ilalim ng mahigpit na presensya ng sundalo?", "options": ["Binabantayan ang kilos ng mga tao", "Malayang nakapaglalakbay ang lahat", "Tumaas ang pagtitiwala sa pamahalaan", "Dumami ang libreng pagtitipon sa bayan"]}, {"q": "Alin ang halimbawa ng kilusang gerilya sa panahon ng Hapones?", "options": ["Hukbalahap sa Gitnang Luzon", "Katipunan sa Maynila", "Kilusang Propaganda sa Espanya", "Asociacion Feminista Filipina"]}, {"q": "Ano ang panganib ng paglaban gamit ang lihim na taktika?", "options": ["Mahuli at maparusahan ng mga sundalo", "Makatanggap ng gantimpala mula sa hukbo", "Mapatawad agad ng mga mananakop", "Mabigyan ng bagong lupain ang pamilya"]}, {"q": "Bakit paglabag sa karapatang pantao ang pagpapahirap sa mga sibilyan?", "options": ["Nilalabag nito ang dignidad ng tao", "Nagbibigay ito ng kapangyarihan sa lahat", "Pinapantay nito ang kalagayan ng bayan", "Pinapalakas nito ang tiwala ng mamamayan"]}, {"q": "Ano ang dapat gawin ng mga bansa upang maprotektahan ang mga sibilyan sa digmaan?", "options": ["Igalang ang karapatang pantao", "Unahin ang tagumpay ng hukbo", "Ipagpaliban ang pagtulong sa mga lumikas", "Itago ang mga ulat ng pang-aabuso"]}, {"q": "Aling sitwasyon ang nagpapakita ng katatagan ng mga Pilipino noong okupasyon?", "options": ["Pagbabahagi ng pagkain sa kapitbahay", "Pag-uunahan sa natitirang pagkain ng bayan", "Pagtataas ng presyo ng bigas", "Pagtakas sa tungkulin sa komunidad"]}, {"q": "Ano ang maaaring maramdaman ng pamilyang lumikas dahil sa labanan?", "options": ["Takot at pag-aalala sa kaligtasan", "Tuwa sa pagbabago ng tirahan", "Kampante sa bagong patakaran", "Sabik sa pagbabalik ng mga mananakop"]}, {"q": "Alin ang halimbawa ng pagtutol sa mananakop nang walang armas?", "options": ["Pagtatago sa mga gerilya", "Paglusob sa kampo ng mga sundalo", "Pagbabayad ng buwis nang maaga", "Pagsunod sa lahat ng kautusan"]}, {"q": "Ano ang pinakamalaking panganib ng pagpapakalat ng maling balita sa digmaan?", "options": ["Malilinlang ang mamamayan sa pagpapasya", "Mapapabilis ang pagtutulungan ng buong bayan", "Bababa ang bilang ng mga nagbabasa", "Titibay ang tiwala sa lahat ng ulat"]}, {"q": "Ano ang magkatulad sa isyung ekonomiko ng panahon ng Espanyol at Hapones?", "options": ["Naapektuhan ang kita at pagkain ng bayan", "Lumaki ang sahod ng lahat ng manggagawa", "Naging libre ang lahat ng pangunahing bilihin", "Nabawasan ang kontrol ng mananakop sa bayan"]}, {"q": "Aling pares ng panahon at pangunahing hamon ang tama?", "options": ["Espanyol: tributo at polo y servicio", "Hapones: pagbubukas ng pampublikong paaralan", "Amerikano: pagtatatag ng Guardia Civil", "Espanyol: militarisasyon at guerrilla"]}, {"q": "Ano ang pinakamahalagang aral mula sa tatlong panahon ng pananakop?", "options": ["Ang pagkakaisa ang lakas ng bayan", "Ang pananahimik ang susi sa kalayaan", "Ang dayuhan ang tagapagligtas ng bayan", "Ang pag-iwas sa usapin ang solusyon"]}, {"q": "Ano ang layunin ng paggamit ng Venn diagram sa paghahambing ng mga panahon?", "options": ["Makita ang pagkakatulad at kaibahan", "Mabilang ang lahat ng petsa at pangalan", "Mapalitan ang mga tala ng aklat", "Mapaikli ang aralin sa kasaysayan ng bansa"]}, {"q": "Paano nakaimpluwensiya ang mga karanasan sa pananakop sa pambansang pagkakakilanlan?", "options": ["Umusbong ang pagkakakilanlang Pilipino", "Nawala ang pagkakakilanlan ng lahat", "Napalitan ang wika ng bawat pamilya", "Naging magkakahiwalay ang lahat ng lalawigan"]}, {"q": "Alin ang pinakamahusay na halimbawa ng makabayang pagkilos ngayon?", "options": ["Pagsali sa paglilinis ng bayan", "Pagpapakalat ng balitang hindi sinuri", "Pag-iwas sa mga proyekto ng barangay", "Paglaktaw sa pagboto sa halalan"]}, {"q": "Bakit hindi sapat ang basta pagsunod sa mananakop upang mapanatili ang karapatan?", "options": ["Hindi nito tiniyak ang sariling pamamahala", "Ginagarantiyahan nito ang pantay na karapatan", "Nagbubunga ito ng malayang pagpili ng pinuno", "Pinapalakas nito ang tinig ng mamamayan"]}, {"q": "Ano ang ginagawa ng mag-aaral na may kamalayang Pilipino kapag may maling balitang kumakalat?", "options": ["Sinusuri ang pinagmulan bago maniwala", "Ibinabahagi agad upang mauna sa iba", "Pinaniniwalaan dahil marami ang nagsabi", "Binabalewala ang lahat ng ulat sa balita"]}];
+
+const $ = id => document.getElementById(id);
+const L = ["A","B","C","D"];
+
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* Bagong ayos: random na tanong + balanseng posisyon ng tamang sagot (A–D pantay-pantay) */
+function buildRun(){
+  const picked = shuffle(BANK).slice(0, Math.min(TOTAL_ITEMS, BANK.length));
+  let targets = [];
+  for(let i=0;i<picked.length;i++) targets.push(i%4);
+  targets = shuffle(targets);
+  return picked.map((it,i)=>{
+    const correct = it.options[0];
+    const others = shuffle(it.options.slice(1));
+    const opts = [];
+    let o = 0;
+    for(let k=0;k<4;k++) opts.push(k===targets[i] ? correct : others[o++]);
+    return { q: it.q, opts, answer: targets[i] };
+  });
+}
+
+let run = [], idx = 0, chosen = [], deadline = 0, tick = null, locked = false, student = {name:"",sec:""};
+
+function show(id){ ["start","quiz","result"].forEach(s=>$(s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
+
+function startQuiz(){
+  const nm = $("nm").value.trim();
+  if(!nm){ $("err").textContent = "Pakilagay muna ang iyong pangalan."; $("nm").focus(); return; }
+  $("err").textContent = "";
+  student = { name: nm, sec: $("sec").value.trim() };
+  run = buildRun(); idx = 0; chosen = new Array(run.length).fill(null);
+  $("who").textContent = student.name + (student.sec ? " · " + student.sec : "");
+  show("quiz"); renderQ();
+}
+
+function renderQ(){
+  const it = run[idx]; locked = false;
+  $("qCount").textContent = `Aytem ${idx+1} / ${run.length}`;
+  $("prog").style.width = (idx/run.length*100) + "%";
+  $("qno").textContent = `Tanong ${idx+1}`;
+  $("qtext").textContent = it.q;
+  const box = $("opts"); box.innerHTML = "";
+  it.opts.forEach((t,k)=>{
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "opt"; b.dataset.k = k;
+    const l = document.createElement("span"); l.className = "l"; l.textContent = L[k];
+    const s = document.createElement("span"); s.textContent = t;
+    b.append(l, s);
+    b.addEventListener("click", ()=>pick(k));
+    box.appendChild(b);
+  });
+  $("nextBtn").textContent = idx === run.length-1 ? "Tapusin ✓" : "Susunod →";
+  startTimer();
+}
+
+function pick(k){
+  if(locked) return;
+  chosen[idx] = k;
+  document.querySelectorAll(".opt").forEach(b=>b.classList.toggle("sel", +b.dataset.k===k));
+}
+
+function startTimer(){
+  clearInterval(tick);
+  deadline = Date.now() + TIME_LIMIT*1000;
+  const t = $("timer");
+  const update = ()=>{
+    const left = Math.max(0, deadline - Date.now());
+    const s = Math.ceil(left/1000);
+    $("tnum").textContent = s + "s";
+    $("tbar").style.width = (left/(TIME_LIMIT*1000)*100) + "%";
+    t.classList.toggle("warn", s<=10 && s>5);
+    t.classList.toggle("crit", s<=5);
+    if(left<=0){ clearInterval(tick); timeUp(); }
+  };
+  update(); tick = setInterval(update, 100);
+}
+
+function timeUp(){
+  const f = $("flash"); f.classList.add("on"); setTimeout(()=>f.classList.remove("on"), 900);
+  advance();
+}
+
+function advance(){
+  if(locked) return; locked = true; clearInterval(tick);
+  if(idx < run.length-1){ idx++; renderQ(); } else finish();
+}
+
+function finish(){
+  clearInterval(tick);
+  $("prog").style.width = "100%";
+  let score = 0, missed = 0;
+  const rv = $("review"); rv.innerHTML = "";
+  run.forEach((it,i)=>{
+    const ok = chosen[i] === it.answer; if(ok) score++;
+    if(chosen[i]===null) missed++;
+    const d = document.createElement("div"); d.className = "ri" + (ok?" ok":"");
+    const q = document.createElement("div"); q.className = "q"; q.textContent = `${i+1}. ${it.q}`;
+    const a = document.createElement("div"); a.className = "a";
+    const yours = chosen[i]===null ? "Walang sagot (naubos ang oras)" : `${L[chosen[i]]}. ${it.opts[chosen[i]]}`;
+    a.innerHTML = "";
+    const l1 = document.createElement("div"); l1.innerHTML = "<b>Sagot mo:</b> "; l1.append(document.createTextNode(yours));
+    const l2 = document.createElement("div"); l2.innerHTML = "<b>Tamang sagot:</b> "; l2.append(document.createTextNode(`${L[it.answer]}. ${it.opts[it.answer]}`));
+    a.append(l1); if(!ok) a.append(l2);
+    d.append(q, a); rv.appendChild(d);
+  });
+  const pct = Math.round(score/run.length*100);
+  $("rScore").textContent = score; $("rOf").textContent = `/ ${run.length}`;
+  $("ring").style.setProperty("--p", pct);
+  $("rName").textContent = student.name; $("rSec").textContent = student.sec ? "· " + student.sec : "";
+  $("rPct").textContent = `Marka: ${score} sa ${run.length} (${pct}%)`;
+  $("rMiss").textContent = missed ? `Hindi nasagutan / naubusan ng oras: ${missed}` : "Lahat ng aytem ay nasagutan.";
+  $("rDate").textContent = new Date().toLocaleString("fil-PH");
+  show("result");
+}
+
+$("startBtn").addEventListener("click", startQuiz);
+$("nextBtn").addEventListener("click", advance);
+$("restart").addEventListener("click", ()=>{ show("start"); $("nm").focus(); });
+$("printBtn").addEventListener("click", ()=>window.print());
+$("nm").addEventListener("keydown", e=>{ if(e.key==="Enter") startQuiz(); });
+document.addEventListener("keydown", e=>{
+  if($("quiz").classList.contains("hidden")) return;
+  const k = "abcd".indexOf(e.key.toLowerCase());
+  if(k>-1 && e.key.length===1){ pick(k); }
+  else if(e.key==="Enter"){ e.preventDefault(); advance(); }
+});
+$("sN").textContent = Math.min(TOTAL_ITEMS, BANK.length);
+$("sT").textContent = TIME_LIMIT;
+</script>
+</body>
+</html>
